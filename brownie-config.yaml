@@ -1,0 +1,14 @@
+dotenv: .env
+keys:
+  private_key: ${PRIVATE_KEY}
+networks:
+  default: ganache-local
+  ganache-local:
+    host: http://127.0.0.1
+    port: 7545
+    network_id: 5777
+  sepolia:
+    host: https://sepolia.infura.io/v3/${WEB3_INFURA_PROJECT_ID}
+    chainid: 11155111
+    explorer: https://sepolia.etherscan.io
+    gas_price: auto
