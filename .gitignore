@@ -1,6 +1,6 @@
 __pycache__/
 
 build/
-**/myenv/
-/path/
+myenv/
+path/
 config.json
