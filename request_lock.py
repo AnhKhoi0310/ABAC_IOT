@@ -1,7 +1,7 @@
 import paho.mqtt.publish as publish
 import json
 from datetime import datetime 
-mqtt_broker_address = "172.16.58.40"  # Use the same broker as receiver
+mqtt_broker_address = "172.16.58.64"  # Use the same broker as receiver
 
 mqtt_channel = "request/permit"
 

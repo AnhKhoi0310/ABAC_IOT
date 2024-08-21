@@ -1,6 +1,6 @@
 import paho.mqtt.client as mqtt_client
 import json
-mqtt_broker_address = "172.16.58.40"
+mqtt_broker_address = "172.16.58.64"
 MQTT_RECEIVE_PERMIT = "send/permit"
 MQTT_PORT = 1883
 # Callback function when a message is received
