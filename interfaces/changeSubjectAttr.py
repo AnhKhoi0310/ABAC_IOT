@@ -1,18 +1,17 @@
-from interfaces.calculateTrustPoint import calculate_point
+# This file is for manually change Subject Attribute
 from web3 import Web3
 import json
 import os
 from dotenv import load_dotenv
 load_dotenv()
 
-def update_point(SubjectAddress):
-    #create new trust point update
-    trust_point = calculate_point(SubjectAddress)
-    print("Trust point will increase", trust_point)
+def change_attribs(SubjectAddress =''):
+    if SubjectAddress =='':
+        SubjectAddress = os.getenv("SubjectAddress")
     infura_url = f"https://sepolia.infura.io/v3/{os.getenv('WEB3_INFURA_PROJECT_ID')}"
     web3 = Web3(Web3.HTTPProvider(infura_url)) 
 
-    with open('build/contracts/SubjectAttribute.json') as f:
+    with open('../build/contracts/SubjectAttribute.json') as f:
         contract_json = json.load(f)
     
     abi = contract_json['abi']
@@ -26,20 +25,11 @@ def update_point(SubjectAddress):
     # get gurrent nonce
     nonce = web3.eth.get_transaction_count(account.address)
     # Get current trust
-    current_trust = contract.functions.get_trust(
-            os.getenv("SubjectAddress"),
-        ).call()  
-    print("Current trust point:", current_trust )
-    # calculate new trust
-    if current_trust < 100:
-        new_trust = current_trust + trust_point
-    else:
-        new_trust = current_trust
     tx = contract.functions.change_attribs(
         os.getenv("SubjectAddress"),
         "",
         0,
-        new_trust,
+        80,
         0,
         0,
         [],
@@ -79,4 +69,4 @@ def update_point(SubjectAddress):
         print(f"Error sending transaction: {e}")
     
 
-# update_point()
+change_attribs()

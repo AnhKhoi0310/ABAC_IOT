@@ -36,10 +36,8 @@ def start_client():
     client.connect(MQTT_BROKER, MQTT_PORT, 60)
     client.loop_forever()
 
-
 def on_message(client, userdata, msg):
     # print(f"Received message {msg.topic}: {json.loads(msg.payload.decode())}")
-
     if msg.topic == MQTT_RECEIVE_REQUEST:
         global first_message_time
         # Get the current time for recording purpose
@@ -152,7 +150,6 @@ def on_message(client, userdata, msg):
         end_entire_program = time.time()
         print("The time of execution for entire program is :", (end_entire_program- first_message_time) * 10**3, "ms")
 
-   
 
 if __name__ == "__main__":
     start_client()
