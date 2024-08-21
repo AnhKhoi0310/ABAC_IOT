@@ -4,17 +4,19 @@ import base64
 from PIL import Image
 import io
 from cryptography.hazmat.primitives import serialization
+import time
 from capture import capture
 from ECC.encrypt import encrypt_message
 # from send_image import 
 
 # Define the MQTT settings
-MQTT_BROKER = "172.16.58.38"  #  broker's IP address
+MQTT_BROKER = "172.16.58.64"  #  broker's IP address
 MQTT_PORT = 1884
 MQTT_RECEIVE_REQUEST = "request/image"
 MQTT_SEND_IMAGE = "send/image"
 MQTT_RECEIVE_KEY = "exchange/key" # To receive key from server, for initial setup
 MQTT_SEND_ENCRYPTED_IMAGE = "exchange/image" # To send encrypted image to server
+
 
 def on_connect(client, userdata, flags, rc):
     print(f"Connected with result code {rc}")
@@ -26,15 +28,15 @@ def start_client():
     client.on_connect = on_connect
     client.on_message = on_message
     client.connect(MQTT_BROKER, MQTT_PORT, 60)
+    
     client.loop_forever()
-
 
 def on_message(client, userdata, msg):
     data = json.loads(msg.payload.decode())
     print(f"Received message: {data}")
     if msg.topic == MQTT_RECEIVE_REQUEST:
         # Send Normal/Unencrypted Image
-        # capture()
+        capture()
         # try:
         #     with open("test.jpg", "rb") as image_file:
         #         image_data = image_file.read()
@@ -47,7 +49,7 @@ def on_message(client, userdata, msg):
         # Send Normal/Unencrypted Image
         try:
             SubjectAddress = data['SubjectAddress']
-            with open("A20.jpg", "rb") as image_file:
+            with open("capture.jpg", "rb") as image_file:
                 image_data = image_file.read()
             iv, ciphertext, tag = encrypt_message(image_data)
             encoded_iv = base64.b64encode(iv).decode('utf-8')
